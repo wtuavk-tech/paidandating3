@@ -135,10 +135,10 @@ new Vue({
       // 表格列配置 (用于 VXE-Table - 实际上模板覆盖了此配置，但保持一致性更新)
       columns: [
         { field: 'mobile', title: '手机号', width: 95, align: 'center', fixed: 'left' },
-        { field: 'serviceItem', title: '项目/质保期', width: 130, align: 'center' },
+        { field: 'serviceItem', title: '项目/质保期', width: 95, align: 'center' },
         { field: 'status', title: '状态', width: 90, align: 'center' },
-        { field: 'weightedCoefficient', title: '系数', width: 70, align: 'center' },
-        { field: 'region', title: '地域', width: 150, align: 'center' },
+        { field: 'weightedCoefficient', title: '系数', width: 50, align: 'center' },
+        { field: 'region', title: '地域', width: 100, align: 'center' },
         { field: 'address', title: '详细地址', minWidth: 200 },
         { field: 'details', title: '详情', minWidth: 260 },
         // ... 其他列配置
@@ -420,8 +420,8 @@ new Vue({
                     </template>
                 </vxe-column>
 
-                <!-- 项目/质保期 (扩张: 95->130, 居中, 完整显示) -->
-                <vxe-column field="serviceItem" title="服务内容" width="130" align="center">
+                <!-- 项目/质保期 (压缩: 130->95, 居中, 完整显示) -->
+                <vxe-column field="serviceItem" title="服务内容" width="95" align="center">
                     <template #default="{ row }">
                     <div class="flex flex-col items-center justify-center h-full">
                         <span class="text-[#333] font-medium text-[13px]">{{ row.serviceItem }}</span>
@@ -441,15 +441,15 @@ new Vue({
                     </template>
                 </vxe-column>
 
-                <!-- 系数 (扩张: 50->70, 居中) -->
-                <vxe-column field="weightedCoefficient" title="系数" width="70" align="center">
+                <!-- 系数 (压缩: 70->50, 居中) -->
+                <vxe-column field="weightedCoefficient" title="系数" width="50" align="center">
                     <template #default="{ row }">
                         <span class="bg-gray-100 text-[#666] px-1.5 py-0.5 rounded text-[11px] font-bold">{{ row.weightedCoefficient.toFixed(1) }}</span>
                     </template>
                 </vxe-column>
 
-                <!-- 地域 (扩张: 95->150, 居中, 完整显示) -->
-                <vxe-column field="region" title="区域" width="150" align="center">
+                <!-- 地域 (压缩: 150->100, 居中, 完整显示) -->
+                <vxe-column field="region" title="区域" width="100" align="center">
                     <template #default="{ row }">
                         <div class="text-[#333] text-[12px]">{{ row.region }}</div>
                     </template>
