@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>业务订单后台管理系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Vue 2 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    
+    <!-- Element UI -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-ui@2.15.14/lib/theme-chalk/index.css">
+    <script src="https://cdn.jsdelivr.net/npm/element-ui@2.15.14/lib/index.js"></script>
+    
+    <!-- VXE Table & Utils -->
+    <script src="https://cdn.jsdelivr.net/npm/xe-utils"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vxe-table@3.8.3/lib/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/vxe-table@3.8.3/lib/index.umd.js"></script>
+
+    <style>
+      /* 全局字体设定 - 严格仿照支付宝/iOS 标准 */
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        background-color: #f5f5f5; /* 支付宝灰背景 */
+        color: #333333;
+        margin: 0;
+        overflow: hidden;
+        -webkit-font-smoothing: antialiased;
+      }
+      
+      /* VXE Table 支付宝风格定制 - 去除竖线，保留横线 */
+      .vxe-table--render-default .vxe-table--border-line {
+        border-color: #f0f0f0 !important;
+      }
+      
+      /* 表头样式 - 颜色调整为 #333333 (深灰) */
+      .vxe-header--column {
+        background-color: #fafafa !important;
+        background-image: none !important;
+        color: #333333 !important; /* 修改为深色，与内容一致 */
+        font-weight: 600 !important; /*稍微加粗一点点*/
+        font-size: 13px;
+        border-bottom: 1px solid #cbd5e1 !important; /* 加深表头底线 */
+        border-right: 1px solid #cbd5e1 !important; /* 新增列分割线 */
+        padding-top: 8px !important;
+        padding-bottom: 8px !important;
+      }
+
+      /* 单元格样式 - 加高行高，更像列表 */
+      .vxe-table--render-default .vxe-body--column {
+        border-right: 1px solid #cbd5e1 !important; /* 新增列分割线 */
+        border-bottom: 1px solid #cbd5e1 !important; /* 加深行分割线 #cbd5e1 */
+        background-image: none !important;
+        color: #333333;
+        font-size: 13px;
+        transition: background-color 0.2s;
+        height: 64px !important; /* 再次增加行高以容纳两行文字 */
+      }
+      
+      /* Footer 样式 */
+      .vxe-table--render-default .vxe-footer--column {
+         background-color: #fafafa !important;
+         border-color: #cbd5e1 !important;
+      }
+
+      /* 鼠标悬停 - 支付宝蓝底色 */
+      .vxe-table--render-default .vxe-body--row.row--hover,
+      .vxe-table--render-default.stripe--normal .vxe-body--row.row--stripe:hover,
+      .vxe-table--render-default .vxe-body--row:hover {
+        background-color: #f0f7ff !important; /* 极淡的蓝色悬浮 */
+      }
+      
+      /* 斑马纹 */
+      .vxe-table--render-default.stripe--normal .vxe-body--row.row--stripe {
+        background-color: #ffffff !important; 
+      }
+
+      /* 滚动条美化 */
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #cccccc;
+        border-radius: 3px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #b3b3b3;
+      }
+
+      /* Element UI 输入框复刻 */
+      .el-input__inner {
+        height: 32px;
+        line-height: 32px;
+        font-size: 13px;
+        border-color: #e5e5e5;
+        border-radius: 4px;
+        color: #333;
+        background-color: #fff;
+      }
+      .el-input__inner:focus {
+        border-color: #1677ff;
+      }
+      .el-input__inner::placeholder {
+        color: #ccc;
+      }
+      
+      /* 跑马灯逻辑调整 */
+      /* 默认状态：transform: translateX(0); (常驻静止) */
+      
+      /* 单次滚动动画类 */
+      .animate-scroll-once {
+        animation: marquee-cycle 80s linear forwards; /* 变慢速度: 80s */
+      }
+      
+      /* 鼠标悬停暂停 */
+      .group:hover .animate-scroll-once {
+        animation-play-state: paused;
+      }
+
+      @keyframes marquee-cycle {
+        0% { transform: translateX(0); }
+        45% { transform: translateX(-100%); } /* 先向左完全滚出 */
+        45.1% { transform: translateX(100%); } /* 瞬间跳到右侧 */
+        100% { transform: translateX(0); } /* 从右侧平滑滚回原位 */
+      }
+
+      /* 浮动动画 */
+      @keyframes float-jump {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-3px); }
+      }
+      .animate-float-jump {
+        animation: float-jump 1.5s infinite ease-in-out;
+      }
+
+      .no-border-table .vxe-table--border-line {
+        border: none !important;
+      }
+      
+      /* 按钮通用复写 */
+      .el-button--primary {
+        background-color: #1677ff !important;
+        border-color: #1677ff !important;
+      }
+      .el-button--primary:hover {
+        background-color: #4096ff !important;
+        border-color: #4096ff !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
