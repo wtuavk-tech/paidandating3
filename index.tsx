@@ -401,7 +401,7 @@ new Vue({
                 border="none"
                 show-header-overflow
                 show-overflow
-                :row-config="{isHover: true, height: 64}"
+                :row-config="{isHover: true, height: 58}"
                 :data="displayData"
                 :loading="loading"
                 height="100%"
@@ -455,17 +455,17 @@ new Vue({
                     </template>
                 </vxe-column>
 
-                <!-- 地址 - (压缩以适应: 220->200) -->
+                <!-- 地址 - (字体增大: 12px -> 13.2px) -->
                 <vxe-column field="address" title="地址" min-width="200">
                     <template #default="{ row }">
-                    <span class="text-[#333] text-[12px] leading-snug line-clamp-2 whitespace-normal break-words" :title="row.address">{{ row.address }}</span>
+                    <span class="text-[#333] text-[13.2px] leading-snug line-clamp-2 whitespace-normal break-words" :title="row.address">{{ row.address }}</span>
                     </template>
                 </vxe-column>
                 
-                <!-- 详情 - (压缩以适应: 280->260) -->
+                <!-- 详情 - (字体增大: 12px -> 13.2px) -->
                 <vxe-column field="details" title="详情" min-width="260">
                     <template #default="{ row }">
-                    <span class="text-[#333] text-[12px] leading-snug line-clamp-2 whitespace-normal break-words" :title="row.details">{{ row.details }}</span>
+                    <span class="text-[#333] text-[13.2px] leading-snug line-clamp-2 whitespace-normal break-words" :title="row.details">{{ row.details }}</span>
                     </template>
                 </vxe-column>
 
@@ -514,8 +514,8 @@ new Vue({
                     </template>
                 </vxe-column>
 
-                <!-- 时间 (压缩: 105->105) -->
-                <vxe-column field="recordTime" title="时间" width="105" align="center">
+                <!-- 时间 (压缩: 105->90) -->
+                <vxe-column field="recordTime" title="时间" width="90" align="center">
                     <template #default="{ row }">
                         <div class="flex flex-col gap-0.5 text-[11px] w-full justify-center h-full">
                             <div class="text-[#999]">{{ row.recordTime }}</div>
@@ -524,8 +524,8 @@ new Vue({
                     </template>
                 </vxe-column>
                 
-                <!-- 资源 (压缩: 45->45) -->
-                <vxe-column field="resource" title="资源" width="45" align="center">
+                <!-- 资源 (扩张: 45->60) -->
+                <vxe-column field="resource" title="资源" width="60" align="center">
                     <template #default="{ row }">
                         <span class="cursor-pointer text-[12px] text-[#1677ff] hover:underline" @click="checkResource(row)">查看</span>
                     </template>
